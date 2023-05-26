@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Language;
 use App\Models\LocalizationKey;
 use App\Models\Module;
@@ -24,9 +23,9 @@ class TranslationFactory extends Factory
     public function definition(): array
     {
         return [
-            'key_id' => LocalizationKey::factory(),
-            'language_id' => Language::factory(),
-            'module_id' => Module::factory(),
+            'key_id' => LocalizationKey::all()->unique()->random(),
+            'language_id' => Language::all()->random(),
+            'module_id' => Module::all()->random(),
             'value' => $this->faker->text,
         ];
     }

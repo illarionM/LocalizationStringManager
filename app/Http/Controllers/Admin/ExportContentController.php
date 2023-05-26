@@ -32,7 +32,6 @@ class ExportContentController extends Controller
         $platform = Platform::where('name', $request->platform)->first();
         $platformsExportFormats = $platform->exportFormats;
 
-
         foreach ($platformsExportFormats as $exportFormat) {
             $formatClass = $this->getExportClass($exportFormat->name, $languages);
             $zipName = $formatClass->createZip();
@@ -52,7 +51,7 @@ class ExportContentController extends Controller
 
     public function downloadZipFiles(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        if ($this->zipFiles > 1) {
+        if (count($this->zipFiles) > 1) {
             return response()->download($this->combineZipFiles());
         } else {
             return response()->download($this->zipFiles[0]);

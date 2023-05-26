@@ -21,7 +21,7 @@ class jsonExport extends Export
             foreach ($translations as $translation) {
                 $jsonTranslations[$translation->module->name . '_' . $translation->key->name] = $translation->value;
             }
-            fwrite($jsonFile, json_encode($jsonTranslations));
+            fwrite($jsonFile, json_encode($jsonTranslations, JSON_PRETTY_PRINT));
             fclose($jsonFile);
             Storage::disk('public')->put($this->extension . '/' . $filename, file_get_contents($filename));
             $this->filesToZip[] = $filename;

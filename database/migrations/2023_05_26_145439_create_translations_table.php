@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('language_id')->constrained();
             $table->foreignId('module_id')->constrained();
             $table->text('value');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
 

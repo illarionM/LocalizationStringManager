@@ -23,8 +23,8 @@ class PlatformTranslationFactory extends Factory
     public function definition(): array
     {
         return [
-            'platform_id' => Platform::factory(),
-            'translation_id' => Translation::factory(),
+            'platform_id' => Platform::all()->random(),
+            'translation_id' => Translation::all()->random(),
         ];
     }
 }

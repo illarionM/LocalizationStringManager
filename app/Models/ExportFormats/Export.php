@@ -30,7 +30,7 @@ abstract class Export
             $this->translationBatches[$language->code] = Translation::with('key', 'module')->where(
                 'language_id',
                 $language->id
-            )->get();
+            )->where('active', '=', true)->get();
         }
     }
 

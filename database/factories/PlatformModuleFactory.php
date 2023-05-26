@@ -23,8 +23,8 @@ class PlatformModuleFactory extends Factory
     public function definition(): array
     {
         return [
-            'platform_id' => Platform::factory(),
-            'module_id' => Module::factory(),
+            'platform_id' => Platform::all()->random(),
+            'module_id' => Module::all()->random(),
         ];
     }
 }

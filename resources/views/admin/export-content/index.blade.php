@@ -26,7 +26,7 @@
                     <div class="form-group mr-20">
                         <input type="checkbox" name="exportLanguages[{{$language->code}}]" id="{{$language->code}}"
                                class="crud_bulk_actions_main_checkbox" value="{{$language->code}}">
-                        <label>{{$language->code}}</label>
+                        <label for="{{$language->code}}">{{$language->code}}</label>
                     </div>
                 @endforeach
             </div>
