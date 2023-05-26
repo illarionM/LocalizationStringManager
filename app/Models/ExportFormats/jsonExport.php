@@ -4,10 +4,10 @@ namespace App\Models\ExportFormats;
 
 use Illuminate\Support\Facades\Storage;
 
-class csvExport extends Export
+class jsonExport extends Export
 {
-    public $extension = 'csv';
-    public $zipFileName = 'translations_csv.zip';
+    public $extension = 'json';
+    public $zipFileName = 'translations_json.zip';
 
     public function __construct($languages)
     {
@@ -15,16 +15,14 @@ class csvExport extends Export
 
         foreach ($this->translationBatches as $language => $translations) {
             $filename = $language . '.' . $this->getExportFileExtension();
-            $csvFile = fopen($filename, 'w');
+            $jsonFile = fopen($filename, 'w');
 
-            // write the header row
-            fputcsv($csvFile, $this->getExportHeadings());
+            $jsonTranslations = [];
             foreach ($translations as $translation) {
-                // write each translation as a row in the CSV file
-                fputcsv($csvFile, [$translation->module->name . '_' . $translation->key->name, $translation->value]);
+                $jsonTranslations[$translation->module->name . '_' . $translation->key->name] = $translation->value;
             }
-            // close the file
-            fclose($csvFile);
+            fwrite($jsonFile, json_encode($jsonTranslations));
+            fclose($jsonFile);
             Storage::disk('public')->put($this->extension . '/' . $filename, file_get_contents($filename));
             $this->filesToZip[] = $filename;
         }

@@ -26,4 +26,6 @@ Route::group([
     Route::crud('platform-translation', 'PlatformTranslationCrudController');
     Route::crud('export-format', 'ExportFormatCrudController');
     Route::crud('platform-export-format', 'PlatformExportFormatCrudController');
+    Route::get('export-content', 'ExportContentController@index');
+    Route::post('export-content', 'ExportContentController@processForm');
 }); // this should be the absolute last line of this file

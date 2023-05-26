@@ -5,6 +5,8 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Platform extends Model
 {
@@ -28,4 +30,9 @@ class Platform extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function exportFormats()
+    {
+        return $this->belongsToMany(ExportFormat::class, 'platform_export_formats', 'platform_id', 'format_id');
+    }
 }

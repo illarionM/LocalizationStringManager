@@ -3,6 +3,8 @@
 
 @includeWhen(class_exists(\Backpack\DevTools\DevToolsServiceProvider::class), 'backpack.devtools::buttons.sidebar_item')
 
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('export-content') }}"><i class="nav-icon la la-question"></i> Export Content</a></li>
+
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('module') }}"><i class="nav-icon la la-question"></i> Modules</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-question"></i> Users</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('platform') }}"><i class="nav-icon la la-question"></i> Platforms</a></li>

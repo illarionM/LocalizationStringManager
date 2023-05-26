@@ -3,25 +3,45 @@
 namespace App\Models\ExportFormats;
 
 use App\Models\Translation;
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
 
 abstract class Export
 {
     private $exportFileName = 'translations';
 
-    private $exportFileExtension = 'csv';
+    public $extension;
 
-    private $exportHeadings = ['Key', 'Language', 'Translation'];
+    private $exportHeadings = ['Key', 'Translation'];
 
-    public $translations;
+    private $languages;
 
-    public function __construct()
+    public $translationBatches = [];
+
+    public $filesToZip = [];
+
+    public $zipFileName;
+
+    public function __construct($languages)
     {
-        $this->translations = Translation::with('language', 'localizationKey')->get();
+        $this->languages = $languages;
+
+        foreach ($this->languages as $language) {
+            $this->translationBatches[$language->code] = Translation::with('key', 'module')->where(
+                'language_id',
+                $language->id
+            )->get();
+        }
     }
 
     public function getExportFileName(): string
     {
-        return $this->exportFileName.'.'.$this->exportFileExtension;
+        return $this->exportFileName . '.' . $this->extension;
+    }
+
+    public function getExportFileExtension(): string
+    {
+        return $this->extension;
     }
 
     public function getExportHeadings(): array
@@ -29,5 +49,25 @@ abstract class Export
         return $this->exportHeadings;
     }
 
-    abstract static public function export();
+    public function getFilesToZip(): string
+    {
+        $zip = new ZipArchive;
+        $zipFilePath = storage_path('app/public/' . $this->zipFileName);
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+            $Files = Storage::files('public/' . $this->extension);
+
+            foreach ($Files as $File) {
+                $fileContent = Storage::get($File);
+                $fileName = pathinfo($File, PATHINFO_BASENAME);
+
+                $zip->addFromString($fileName, $fileContent);
+            }
+
+            $zip->close();
+            return $zipFilePath;
+        } else {
+            return '';
+        }
+    }
 }
